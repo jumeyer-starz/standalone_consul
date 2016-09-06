@@ -1,0 +1,84 @@
+<!doctype html><html lang="en">
+<head>
+<style>
+html{
+font-family: verdana;
+}
+#kvList {
+	list-style-type:none;
+}
+#kvList li key{
+display:none;
+}
+
+#kvList li link {
+font-size: 8px;
+}
+
+#kvList li value{
+display:none;
+}
+#kvList li display{
+	display:block;
+	border: 1px solid black;
+	padding: 10px;
+	margin: 3px;
+}
+#kvList li display:hover{
+	display:block:
+	font-weight:bold;
+	background-color:#CCCCCC;
+
+}
+
+</style>
+<script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+<script src="https://code.jquery.com/ui/1.12.0/jquery-ui.min.js"></script>
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.0-rc.2/themes/smoothness/jquery-ui.css" />
+<script src="headless.js"></script>
+</head>
+<body>
+<h1>consul standalone client poc</h1>
+<p>
+<button id="refreshButton">Refresh Consul Data</button><button id="addButton">Add New Redirect</button>
+<ul id="kvList">
+</ul>
+</p>
+
+<div id="editDialog" style="display:none;">
+	<table>
+	<tr>
+		<td>Redirect Id</td>
+		<td id="ed_redirectId"></td>
+	</tr>
+	<tr>
+		<td>Server/Path</td>
+		<td><input type="text" style="width:270px;" id="ed_server"></input>/<input style="width:150px;" type="text" id="ed_path"></input></td>
+	</tr>
+	<tr>
+		<td>URL</td>
+		<td><input type="text" id="ed_url"></input></td>
+	</tr>
+
+	</table>
+</div>
+
+<div id="addDialog" style="display:none;">
+        <table>
+        <tr>
+                <td>Server hostname http://</td>
+                <td><input type="text" id="add_server"></input></td>
+        </tr>
+        <tr>
+                <td>Path /</td>
+                <td><input type="text" id="add_path"></input></td>
+        </tr>
+        <tr>
+                <td>Redirect to URL</td>
+                <td><input type="text" placeholder="http://" id="add_url"></input></td>
+        </tr>
+        </table>
+</div>
+
+</body>
+</html>

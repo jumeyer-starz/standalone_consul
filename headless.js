@@ -1,124 +1,110 @@
-var host = "http://ec2-54-204-84-154.compute-1.amazonaws.com";
-
+var host = ""; //provide hostname if not self
 var getKVs = function(){};
 
 function makeguid() {
-  function s4() {
-    return Math.floor((1 + Math.random()) * 0x10000)
-      .toString(16)
-      .substring(1);
-  }
-  //return s4() + s4() + '-' + s4() + '-' + s4() + '-' + s4() + '-' + s4() + s4() + s4();
-  return s4() + s4()  + s4() + s4() + s4() + s4() + s4() + s4();
+	function s4() {
+		return Math.floor((1 + Math.random()) * 0x10000)
+		.toString(16)
+		.substring(1);
+	}
+	//return s4() + s4() + '-' + s4() + '-' + s4() + '-' + s4() + '-' + s4() + s4() + s4();
+	return s4() + s4()  + s4() + s4() + s4() + s4() + s4() + s4();
 }
 
 $( document ).ready(function() {
-	
-    $( "#editDialog" ).dialog({
-    	autoOpen:false,
-    	modal:true,
-    	width:600,
-    	buttons:[
-    		{
-    			text:"Cancel",
-    			click:function(){
-    				$( this ).dialog( "close" );
-    			}
-    		},{
-                        text:"Delete",
-                        click:function(){
-				$.ajax({
-                                        ptr:$( this ).dialog( "close" ),
-                                                url: host + '/v1/kv/redirects/' + $('#ed_server').val() + '/' + $('#ed_redirectId').text() + '?dc=dc1&token=',
-                                                method: "DELETE",
-                                                contentType: 'application/json',
-                                                //data:$('#ed_path').val() + "\n" + $('#ed_url').val()+"\n",
-                                                dataType: 'json',
-                                                processData: false,
-                                                crossDomain:false,
-                                                crossOrigin:false,
-                                                success: function(data,result){
-                                                        console.warn("success")
-                                                        console.warn(data);
-                                                        this.ptr.dialog("close");
-							getKVs();
-                                                },
-                                                failure:function(data,result){
-                                                        //console.log(data);
-                                                        //$( this ).dialog( "close" );
-                                                }
 
-                                });//ajax
-                        }
-                },{
-    			text:"ok",
-    			click:function(){
-    				$.ajax({
-    					ptr:$( this ).dialog( "close" ),
+	$( "#editDialog" ).dialog({
+		autoOpen:false,
+		modal:true,
+		width:600,
+		buttons:[
+		{
+			text:"Cancel",
+			click:function(){
+				$( this ).dialog( "close" );
+			}
+		},{
+			text:"Delete",
+			click:function(){
+				if(confirm("Really Delete?")){
+					$.ajax({
+						ptr:$( this ).dialog( "close" ),
 						url: host + '/v1/kv/redirects/' + $('#ed_server').val() + '/' + $('#ed_redirectId').text() + '?dc=dc1&token=',
-						method: "PUT",
+						method: "DELETE",
 						contentType: 'application/json',
-						data:$('#ed_path').val() + "\n" + $('#ed_url').val()+"\n",
-						dataType: 'json',
-						processData: false,
-						crossDomain:false,
-						crossOrigin:false,
-						success: function(data,result){
-							console.warn("success")
-							console.warn(data);
-							this.ptr.dialog("close");
-							getKVs();
-						},
-						failure:function(data,result){
-							//console.log(data);
-							//$( this ).dialog( "close" );
-						}
-    				
-    				});//ajax
-    			}
-    		}
-    	]
-    });
+				        dataType: 'json',
+				        processData: false,
+				        crossDomain:false,
+				        crossOrigin:false,
+				        success: function(data,result){
+				        	this.ptr.dialog("close");
+				        	getKVs();
+				        },
+				        failure:function(data,result){}
+
+				    });
+				}
+			}
+		},{
+			text:"ok",
+			click:function(){
+				$.ajax({
+					ptr:$( this ).dialog( "close" ),
+					url: host + '/v1/kv/redirects/' + $('#ed_server').val() + '/' + $('#ed_redirectId').text() + '?dc=dc1&token=',
+					method: "PUT",
+					contentType: 'application/json',
+					data:$('#ed_path').val() + "\n" + $('#ed_url').val()+"\n",
+					dataType: 'json',
+					processData: false,
+					crossDomain:false,
+					crossOrigin:false,
+					success: function(data,result){
+						this.ptr.dialog("close");
+						getKVs();
+					},
+					failure:function(data,result){}
+
+				});
+			}
+		}
+		]
+	});
 
 
 
 	$( "#addDialog" ).dialog({
-        autoOpen:false,
-        modal:true,
-        width:600,
-        buttons:[
-                {
-                        text:"Cancel",
-                        click:function(){
-                                $( this ).dialog( "close" );
-                        }
-                },{
-                        text:"ok",
-                        click:function(){
+		autoOpen:false,
+		modal:true,
+		width:600,
+		buttons:[
+		{
+			text:"Cancel",
+			click:function(){
+				$( this ).dialog( "close" );
+			}
+		},{
+			text:"ok",
+			click:function(){
 				var guid = makeguid();
-	
-				$.ajax({
-                                        ptr:$( this ).dialog( "close" ),
-                                        url: host + '/v1/kv/redirects/' + $('#add_server').val() + '/' + guid + '?dc=dc1&token=',
-                                        method: "PUT",
-                                        contentType: 'application/json',
-                                        data:$('#add_path').val() + "\n" + $('#add_url').val()+"\n",
-                                        dataType: 'json',
-                                        processData: false,
-                                        crossDomain:false,
-                                        crossOrigin:false,
-                                        success: function(data,result){
-                                                        console.warn("success")
-                                                        console.warn(data);
-                                                        this.ptr.dialog("close");
-						getKVs();
-                                        },
-                                        failure:function(data,result){
-                                                        //console.log(data);
-                                                        //$( this ).dialog( "close" );
-                                        }
 
-                                });
+				$.ajax({
+					ptr:$( this ).dialog( "close" ),
+					url: host + '/v1/kv/redirects/' + $('#add_server').val() + '/' + guid + '?dc=dc1&token=',
+					method: "PUT",
+					contentType: 'application/json',
+					data:$('#add_path').val() + "\n" + $('#add_url').val()+"\n",
+					dataType: 'json',
+					processData: false,
+					crossDomain:false,
+					crossOrigin:false,
+					success: function(data,result){
+						this.ptr.dialog("close");
+						getKVs();
+					},
+					failure:function(data,result){
+					}
+
+				});
 			}
 		}
 		]
@@ -127,38 +113,34 @@ $( document ).ready(function() {
 	$('#addButton').click(function(){
 		$( "#addDialog" ).dialog("open");
 	});
-    
-    $('#refreshButton').click(function(){
-    	console.warn('so refreshing');
-	getKVs();
+
+	$('#refreshButton').click(function(){
+		getKVs();
 	});
 
 	getKVs = function(){
 
 		$.ajax({
-		  url: host+'/v1/kv/?recurse',
-		  data: {},
-		  method: "GET",
-		  dataType: 'json',
-		  success: function(data,result){
-			  	$('#kvList').empty();
-			  	
-   				$.each(data, function(i, item) {
-          			var values = atob(item.Value).split("\n");
-				var keys = item.Key.split("/");	
-				console.warn("asdf");
-				console.warn(values);
-				$('#kvList').append('<li><key>' + item.Key + "</key><value>"+ item.Value + '</value><display>'+keys[1]+'/'+values[0]+' -> '+values[1]+'</display><link><a href="http://'+keys[1]+'/'+values[0]+'">'+keys[1]+'/'+values[0]+'</a></link></li>');
+			url: host+'/v1/kv/?recurse',
+			data: {},
+			method: "GET",
+			dataType: 'json',
+			success: function(data,result){
+				$('#kvList').empty();
 
-   				}); 
+				$.each(data, function(i, item) {
+					var values = atob(item.Value).split("\n");
+					var keys = item.Key.split("/");	
+					$('#kvList').append('<li><key>' + item.Key + "</key><value>"+ item.Value + '</value><display>'+keys[1]+'/'+values[0]+' -> '+values[1]+'</display><lnk><a target="_new" href="http://'+keys[1]+'/'+values[0]+'">'+keys[1]+'/'+values[0]+'</a></lnk></li>');
+
+				}); 
 
 
-   				//$('#kvList').append( items.join('') );
-   				$('#kvList li').bind( "click", function() {
-			    	console.warn("cklick");
+				$('#kvList li display').bind( "click", function() {
+					var ctr = $(this).parent();
+					var key = ctr[0].children[0].innerHTML;
+					var value = ctr[0].children[1].innerHTML;
 
-					var key = $( this )[0].children[0].innerHTML;
-					var value = $( this )[0].children[1].innerHTML;
 					var valueDecoded = atob(value);
 					var parts = key.split("/");
 					var valParts = valueDecoded.split("\n");
@@ -169,16 +151,14 @@ $( document ).ready(function() {
 					$('#ed_url').val(valParts[1]);
 
 
-					console.warn( parts );
-					console.warn( valParts );
-					//console.warn( $( this ).text() );
+
 					$( "#editDialog" ).dialog("open");
 				});
-		  }
+			}
 
 		});
 	};
 
-
+	getKVs();
 
 });
